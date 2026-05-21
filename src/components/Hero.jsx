@@ -3,7 +3,7 @@ export function Hero() {
     <section id="hero" className="min-h-screen grid md:grid-cols-2 bg-[#d9cbb6]">
       <div className="flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: "url('/abstract-bg.jpg')" }}>
         <img
-          src="/assets/profile-DLRArl9M.jpg"
+          src="/assets/profile-dlrarl9m.jpg"
           alt="Lizeth Pineda"
           className="w-full max-w-max sm:max-w-sm md:w-[420px] shadow-lg p-1"
         />
