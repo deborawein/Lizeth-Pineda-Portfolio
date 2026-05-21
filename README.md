@@ -6,8 +6,10 @@ A modern React + Vite migration of the Lizeth Pineda portfolio website. This pro
 
 - Single-page React application with section-based navigation
 - Category detail pages for portfolio projects
-- Responsive mobile menu and sticky header
-- Tailwind CSS for styling
+- Responsive sticky header with mobile menu
+- Mobile menu shows vertical items on phone and horizontal items on tablet/desktop
+- Category pages include framed media cards with captions for images and video
+- Tailwind CSS styling with Vite build tooling
 - Static assets served from `public/`
 - Uses `window.history.pushState` for client-side routing and smooth navigation
 
@@ -21,7 +23,7 @@ A modern React + Vite migration of the Lizeth Pineda portfolio website. This pro
 ## Repository structure
 
 - `src/` - React source files
-- `src/components/` - UI components (Header, Hero, Portfolio, CategoryPage, AboutMe, Contact, Footer)
+- `src/components/` - UI components: `Header`, `Hero`, `Portfolio`, `CategoryPage`, `AboutMe`, `Contact`, `Footer`
 - `public/` - static assets, images, videos, favicon
 - `index.html` - Vite entry HTML
 - `package.json` - project dependencies and scripts
@@ -39,12 +41,13 @@ npm run preview
 
 - `npm run dev` starts the local development server
 - `npm run build` creates a production build
-- `npm run preview` serves the built app locally
+- `npm run preview` serves the built app locally after build
 
 ## Notes
 
 - The current repository is configured for local development and rebuilds the recovered portfolio UI.
-- The app uses the `public/assets/` folder to preserve existing layout assets from the original deployed site.
+- Category pages now support captions for images and video media.
+- The mobile menu is designed to display vertically on phone and horizontally on larger screens.
 
 ## Deployment
 
