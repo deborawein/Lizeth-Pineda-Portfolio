@@ -1,19 +1,10 @@
-function getPortfolioCover(images) {
-  const firstNonVideo = images.find((item) => item.type !== 'video')
-  if (firstNonVideo) {
-    if (firstNonVideo.type === 'slider' && firstNonVideo.slides?.length) {
-      return firstNonVideo.slides[0].src
-    }
-    return firstNonVideo.src
-  }
+import { Link } from 'react-router-dom'
+import { portfolioItems } from '@/data/portfolio'
+import { getPortfolioCover } from '@/lib/portfolio'
 
-  const firstVideo = images.find((item) => item.type === 'video')
-  return firstVideo?.poster || firstVideo?.src || null
-}
-
-export function Portfolio({ onCategoryClick, portfolioItems = [] }) {
+export function Portfolio() {
   return (
-    <section id="portfolio" className="py-24 px-6 bg-[#d9cbb6]">
+    <section id="portfolio" className="py-24 px-6 bg-brand-sand">
       <div className="max-w-6xl mx-auto">
         <p className="uppercase tracking-[0.5em] text-gray-500 text-xs mb-4">Selected Work</p>
         <h2 className="text-4xl font-semibold text-gray-900">Portfolio</h2>
@@ -25,13 +16,9 @@ export function Portfolio({ onCategoryClick, portfolioItems = [] }) {
           {portfolioItems.map((item) => {
             const cover = getPortfolioCover(item.images)
             return (
-              <a
+              <Link
                 key={item.slug}
-                href={`/category/${item.slug}`}
-                onClick={(event) => {
-                  event.preventDefault()
-                  onCategoryClick(item.slug)
-                }}
+                to={`/category/${item.slug}`}
                 className="relative group h-80 overflow-hidden rounded-[40px] shadow-2xl focus:outline-none focus-visible:ring-4 focus-visible:ring-red-300"
               >
                 <div
@@ -52,7 +39,7 @@ export function Portfolio({ onCategoryClick, portfolioItems = [] }) {
                     {item.summary}
                   </p>
                 </div>
-              </a>
+              </Link>
             )
           })}
         </div>

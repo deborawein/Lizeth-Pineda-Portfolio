@@ -1,58 +1,50 @@
 # Lizeth Pineda Portfolio
 
-A modern React + Vite migration of the Lizeth Pineda portfolio website. This project restores the original layout and behavior from the previous Netlify-hosted site, rebuilt from the existing static bundle and assets.
-
-## Project overview
-
-- Single-page React application with section-based navigation
-- Category detail pages for portfolio projects
-- Responsive sticky header with mobile menu
-- Mobile menu shows vertical items on phone and horizontal items on tablet/desktop
-- Category pages include framed media cards with captions for images and video
-- Tailwind CSS styling with Vite build tooling
-- Static assets served from `public/`
-- Uses `window.history.pushState` for client-side routing and smooth navigation
+A modern React + Vite portfolio site with section-based home navigation and dedicated category pages for each portfolio area.
 
 ## Tech stack
 
 - Vite
 - React 19
+- React Router
 - Tailwind CSS
-- PostCSS
 
-## Repository structure
+## Project structure
 
-- `src/` - React source files
-- `src/components/` - UI components: `Header`, `Hero`, `Portfolio`, `CategoryPage`, `AboutMe`, `Contact`, `Footer`
-- `public/` - static assets, images, videos, favicon
-- `index.html` - Vite entry HTML
-- `package.json` - project dependencies and scripts
-- `tailwind.config.js` - Tailwind configuration
-- `vite.config.js` - Vite configuration
+```
+src/
+├── App.jsx                 # Router setup
+├── main.jsx
+├── components/
+│   ├── layout/             # Header, shared shell
+│   ├── sections/           # Home page sections (Hero, About, Portfolio, Contact)
+│   └── portfolio/          # Category detail UI (slider, media, page)
+├── pages/                  # Route-level pages
+├── data/                   # Portfolio content (edit projects here)
+├── constants/              # Site copy, navigation labels
+├── hooks/                  # Shared React hooks
+└── lib/                    # Pure helpers (scroll, portfolio utils)
+public/                     # Static assets (images, videos, favicon)
+```
 
-## Available scripts
+## Scripts
 
 ```bash
 npm install
-npm run dev
-npm run build
-npm run preview
+npm run dev      # local dev server
+npm run build    # production build → dist/
+npm run preview  # preview production build
 ```
 
-- `npm run dev` starts the local development server
-- `npm run build` creates a production build
-- `npm run preview` serves the built app locally after build
+## Content updates
 
-## Notes
-
-- The current repository is configured for local development and rebuilds the recovered portfolio UI.
-- Category pages now support captions for images and video media.
-- The mobile menu is designed to display vertically on phone and horizontally on larger screens.
+- **Portfolio projects:** edit `src/data/portfolio.js`
+- **Navigation labels:** edit `src/constants/navigation.js`
+- **Contact email & site name:** edit `src/constants/site.js`
 
 ## Deployment
 
-This project can be deployed to Netlify, Vercel, GitHub Pages, or any static hosting provider that supports Vite-built sites.
+Build with `npm run build` and deploy the `dist/` folder. For client-side routes (`/category/...`), configure your host to serve `index.html` for unknown paths.
 
-## Contact
-
-For changes or fixes, update the source under `src/` and run the build again.
+- **Netlify:** `public/_redirects` is included
+- **Vercel / others:** add an SPA fallback to `index.html`

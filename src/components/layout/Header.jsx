@@ -1,30 +1,38 @@
 import { useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { navItems } from '@/constants/navigation'
+import { SITE_NAME } from '@/constants/site'
+import { scrollToSection } from '@/lib/scroll'
 
-const navItems = [
-  { label: 'Hello', href: '#hero' },
-  { label: 'About', href: '#about' },
-  { label: 'Portfolio', href: '#portfolio' },
-  { label: 'Contact', href: '#contact' }
-]
-
-export function Header({ onNavigateSection }) {
+export function Header() {
   const [open, setOpen] = useState(false)
+  const location = useLocation()
+  const navigate = useNavigate()
 
-  const handleClick = (event, href) => {
+  const goToSection = (event, section) => {
     event.preventDefault()
     setOpen(false)
-    const section = href.includes('#') ? href.split('#').pop() : href
-    onNavigateSection(section)
+
+    if (location.pathname !== '/') {
+      navigate({ pathname: '/', hash: `#${section}` })
+      return
+    }
+
+    navigate({ pathname: '/', hash: `#${section}` })
+    scrollToSection(section)
   }
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-[#f2e7d5] border-b border-[#a37850] shadow-sm">
+      <header className="sticky top-0 z-50 bg-brand-cream border-b border-brand-brown shadow-sm">
         <div className="flex items-center justify-between px-8 py-4">
-          <a href="/" className="flex items-center gap-3 text-xl font-semibold text-red-700 hover:text-red-900 tracking-[0.2em] uppercase">
-            <img src="/favicon.svg" alt="Lizeth logo" className="h-10 w-10 object-contain" />
-            <span className="text-base sm:text-xl">Lizeth Pineda</span>
-          </a>
+          <Link
+            to="/"
+            className="flex items-center gap-3 text-xl font-semibold text-red-700 hover:text-red-900 tracking-[0.2em] uppercase"
+          >
+            <img src="/favicon.svg" alt={`${SITE_NAME} logo`} className="h-10 w-10 object-contain" />
+            <span className="text-base sm:text-xl">{SITE_NAME}</span>
+          </Link>
 
           <button
             type="button"
@@ -42,14 +50,14 @@ export function Header({ onNavigateSection }) {
       {open && (
         <nav
           id="site-nav"
-          className="fixed inset-x-0 top-16 z-40 bg-[#f2e7d5] border-t border-[#a37850] shadow-xl"
+          className="fixed inset-x-0 top-16 z-40 bg-brand-cream border-t border-brand-brown shadow-xl"
         >
           <ul className="max-h-[calc(100vh-4rem)] overflow-y-auto overflow-x-hidden flex flex-col md:flex-row md:flex-wrap md:justify-center gap-3 md:gap-8 px-8 py-4 text-sm font-semibold tracking-[0.3em] text-red-700 text-center">
             {navItems.map((item) => (
-              <li key={item.href}>
+              <li key={item.section}>
                 <a
-                  href={item.href}
-                  onClick={(event) => handleClick(event, item.href)}
+                  href={`/#${item.section}`}
+                  onClick={(event) => goToSection(event, item.section)}
                   className="block px-4 py-3 hover:text-red-900 transition-colors uppercase whitespace-nowrap"
                 >
                   {item.label}

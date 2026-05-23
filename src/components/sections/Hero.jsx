@@ -1,7 +1,12 @@
+import { Link } from 'react-router-dom'
+
 export function Hero() {
   return (
-    <section id="hero" className="min-h-screen grid md:grid-cols-2 bg-[#d9cbb6]">
-      <div className="flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: "url('/abstract-bg.jpg')" }}>
+    <section id="hero" className="min-h-screen grid md:grid-cols-2 bg-brand-sand">
+      <div
+        className="flex items-center justify-center bg-cover bg-center"
+        style={{ backgroundImage: "url('/abstract-bg.jpg')" }}
+      >
         <img
           src="/assets/profile-dlrarl9m.jpg"
           alt="Lizeth Pineda"
@@ -9,7 +14,7 @@ export function Hero() {
         />
       </div>
 
-      <div className="bg-[#d9cbb6] flex items-center">
+      <div className="bg-brand-sand flex items-center">
         <div className="max-w-xl px-16 py-6">
           <p className="text-red-400 text-3xl mb-2">¡Hola!</p>
           <h1 className="text-7xl font-serif mb-6">I am Liz.</h1>
@@ -19,12 +24,12 @@ export function Hero() {
           <p className="text-red-500 text-sm mb-10">
             Convirtiendo ideas en historias visuales a través del diseño, la fotografía y la comunicación creativa.
           </p>
-          <a
-            href="#portfolio"
+          <Link
+            to="/#portfolio"
             className="inline-block bg-red-400 text-white px-8 py-3 rounded-full hover:bg-red-500 transition"
           >
             Portfolio
-          </a>
+          </Link>
         </div>
       </div>
     </section>

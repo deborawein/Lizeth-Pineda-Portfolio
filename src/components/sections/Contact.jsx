@@ -1,4 +1,8 @@
+import { CONTACT_EMAIL, CONTACT_LOCATION, SITE_NAME } from '@/constants/site'
+
 export function Contact() {
+  const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Project Inquiry')}`
+
   return (
     <section
       id="contact"
@@ -16,20 +20,22 @@ export function Contact() {
         </div>
 
         <div className="max-w-xl mx-auto bg-white/95 text-gray-900 rounded-[32px] p-8 shadow-2xl border border-white/70 text-center">
-          <img src="/favicon.svg" alt="Lizeth Pineda monogram" className="mx-auto mb-6 h-16 w-16" />
+          <img src="/favicon.svg" alt={`${SITE_NAME} monogram`} className="mx-auto mb-6 h-16 w-16" />
           <p className="text-sm uppercase tracking-[0.4em] text-red-500">Direct Line</p>
-          <h3 className="text-3xl font-semibold mt-2">Lizeth Pineda</h3>
-          <p className="text-gray-600 mt-2">Melbourne, Australia (GMT+11)</p>
+          <h3 className="text-3xl font-semibold mt-2">{SITE_NAME}</h3>
+          <p className="text-gray-600 mt-2">{CONTACT_LOCATION}</p>
           <p className="text-gray-600 mt-4 leading-relaxed">
             Send your brief and I’ll follow up via email with the next steps and a scheduling link if a call helps us move faster.
           </p>
           <a
-            href="mailto:liizyapiro@gmail.com?subject=Project%20Inquiry"
+            href={mailto}
             className="mt-8 inline-flex items-center justify-center rounded-full bg-red-400 text-white px-6 py-3 font-semibold uppercase tracking-[0.2em] hover:bg-red-500 transition"
           >
             Email Me
           </a>
-          <p className="text-xs text-gray-700 mt-12">© {new Date().getFullYear()} Lizeth Pineda. All rights reserved.</p>
+          <p className="text-xs text-gray-700 mt-12">
+            © {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
+          </p>
         </div>
       </div>
     </section>
