@@ -4,6 +4,11 @@
 
 :root {
   color-scheme: light;
+  --header-height: 4rem;
+  --brand-terracotta: #c45c3e;
+  --brand-merlot: #7f1d1d;
+  --font-playfair: 'Playfair Display', serif;
+  --font-inter: 'Inter', sans-serif;
 }
 
 * {
@@ -14,10 +19,12 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: var(--header-height);
+  scroll-snap-type: y proximity;
 }
 
 body {
-  min-height: 100vh;
+  min-height: 100dvh;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background-color: #f7efe2;
   color: #111827;
@@ -37,4 +44,140 @@ button,
 input,
 textarea {
   font: inherit;
+}
+
+@layer components {
+  .screen-section {
+    @apply flex min-h-[100dvh] snap-start snap-always flex-col justify-center;
+  }
+
+  /* Compensates for negative margin that pulls hero under the fixed header */
+  .screen-section-hero {
+    @apply screen-section relative bg-cover bg-center bg-no-repeat;
+    min-height: calc(100dvh + var(--header-height));
+    margin-top: calc(-1 * var(--header-height));
+    padding-top: var(--header-height);
+  }
+
+  .nav-link {
+    @apply relative border-0 bg-transparent px-1 py-2 font-sans text-sm text-brand-merlot-65 transition-colors ;
+  }
+
+  .nav-link:hover {
+    @apply text-brand-merlot;
+  }
+
+  .nav-link--active {
+    font-weight: 600;
+    color: var(--brand-merlot)
+  }
+
+  .nav-link--active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.125rem;
+    height: 2px;
+    border-radius: 9999px;
+    background-color: var(--brand-merlot);
+  }
+
+  .nav-link--mobile {
+    @apply pb-3 text-2xl;
+  }
+
+  .lang-toggle {
+    position: relative;
+    display: inline-grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    width: 5.5rem;
+    height: 2.25rem;
+    padding: 0.2rem;
+    border: 1px solid rgb(163 120 80 / 0.45);
+    border-radius: 9999px;
+    background: rgb(255 255 255 / 0.92);
+    box-shadow: 0 1px 4px rgb(0 0 0 / 0.08);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .lang-toggle--compact {
+    width: 4.75rem;
+    height: 2rem;
+  }
+
+  .lang-toggle__thumb {
+    position: absolute;
+    top: 0.2rem;
+    bottom: 0.2rem;
+    left: 0.2rem;
+    width: calc(50% - 0.2rem);
+    border-radius: 9999px;
+    background: var(--brand-merlot);
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.18);
+    transition: left 0.25s ease;
+    pointer-events: none;
+  }
+
+  .lang-toggle__thumb--es {
+    left: 50%;
+  }
+
+  .lang-toggle__label {
+    position: relative;
+    z-index: 1;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-align: center;
+    color: #6b7280;
+    transition: color 0.2s ease;
+    pointer-events: none;
+  }
+
+  .lang-toggle__label--active {
+    color: #ffffff;
+  }
+
+  .hero-cta {
+    background-color: var(--brand-merlot);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-cta:hover {
+    background-color: color-mix(in srgb, var(--brand-merlot) 88%, black);
+  }
+
+  .hero-cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    background: radial-gradient(circle, rgb(255 255 255 / 0.35) 10%, transparent 10%);
+    transform: scale(10);
+    transition: transform 0.5s ease, opacity 0.8s ease;
+    pointer-events: none;
+  }
+
+  .hero-cta:active::after {
+    opacity: 1;
+    transform: scale(0);
+    transition: 0s;
+  }
+}
+@layer utilities {
+  .text-brand-merlot {
+    color: var(--brand-merlot);
+  }
+  /* 60% Opacity Utility */
+  .text-brand-merlot-65 {
+    color: color-mix(in srgb, var(--brand-merlot) 65%, transparent);
+  }
+  .text-brand-terracotta {
+    color: var(--brand-terracotta);
+  }
 }

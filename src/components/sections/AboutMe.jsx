@@ -1,21 +1,23 @@
+import { content } from '@/data/i18n'
+import { useLanguage } from '@/context/LanguageContext'
+
 export function AboutMe() {
+  const { language } = useLanguage()
+  const copy = content[language].about
+
   return (
     <section
       id="about"
-      className="py-48 px-6 w-full bg-cover bg-center"
+      className="screen-section w-full bg-cover bg-center px-6 py-16"
       style={{ backgroundImage: "url('/abstract-bg.jpg')" }}
     >
-      <div className="bg-white/85 backdrop-blur-sm p-20 rounded-[32px] shadow-lg max-w-2xl mx-auto space-y-6">
-        <h2 className="text-3xl font-semibold">About Me</h2>
-        <p className="text-gray-800 leading-relaxed">
-          Creative, curious, and passionate about visual communication. I enjoy transforming ideas into engaging designs that help brands and people tell their story.
-        </p>
-        <p className="text-gray-800 leading-relaxed">
-          From branding and social media content to photography and digital design, I love exploring different creative forms. I’m also a language enthusiast and believe communication and creativity go hand in hand.
-        </p>
-        <p className="text-gray-800 leading-relaxed">
-          Always open to new projects, collaborations, and opportunities to keep creating.
-        </p>
+      <div className="mx-auto max-w-2xl space-y-6 rounded-[32px] bg-white/85 p-20 shadow-lg backdrop-blur-sm">
+        <h2 className="text-3xl font-semibold">{copy.title}</h2>
+        {copy.paragraphs.map((paragraph) => (
+          <p key={paragraph.slice(0, 24)} className="leading-relaxed text-gray-800">
+            {paragraph}
+          </p>
+        ))}
       </div>
     </section>
   )

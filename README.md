@@ -1,202 +1,109 @@
 # Lizeth Pineda Portfolio
 
-Personal portfolio for **Lizeth Pineda** — visual communication, branding, photography, and digital design. The site has a single home page with scroll sections and dedicated pages for each portfolio category.
+> A bilingual creative portfolio showcasing branding, marketing, photography, and digital design work.
 
-**Live site:** [https://lizethpineda.netlify.app/](https://lizethpineda.netlify.app/)
+![Homepage screenshot](./docs/homepage-screenshot.png)
+
+**Live:** [https://lizethpineda.netlify.app/](https://lizethpineda.netlify.app/)  
+**Status:** Production
+
+## Why this project
+
+Lizeth Pineda needed a personal site to present her work to potential clients and collaborators — not just a gallery of images, but a clear story across branding, marketing, photography, and UX. The site serves visitors who want to browse quickly on the home page, then dive into category detail pages with videos, sliders, and project notes. An EN/ES toggle lets her reach both English- and Spanish-speaking audiences without maintaining two separate sites.
 
 ## Tech stack
 
-- [Vite](https://vite.dev/)
-- [React 19](https://react.dev/)
-- [React Router](https://reactrouter.com/)
-- [Tailwind CSS](https://tailwindcss.com/)
+- **React 19** — UI components and section-based home page
+- **Vite 8** — dev server and production build
+- **React Router 7** — client-side routes (`/`, `/category/:slug`)
+- **Tailwind CSS 3** — layout, responsive design, design tokens
+- **Framer Motion** — header, hero, and CTA animations
+- **Lucide React** — icons (menu, arrow, scroll-to-top)
+- **Netlify** — static hosting with SPA fallback
 
-## Prerequisites
+## Key technical decisions
 
-- **Node.js** 18 or newer (20 LTS recommended; see `.nvmrc`)
-- **npm** (included with Node.js)
-
-If you use [nvm](https://github.com/nvm-sh/nvm), run `nvm use` in the project root to switch to Node 20.
+- **Separated content from UI** — portfolio projects live in `src/data/portfolio.js` and copy in `src/data/i18n.js`, so Liz can update work and text without touching components.
+- **React Router over manual history** — declarative routes replace hand-rolled `pushState`, making category pages and deep links predictable; `public/_redirects` handles SPA fallback on Netlify.
+- **Full-viewport sections with scroll spy** — each home section uses `min-height: 100dvh` and `useActiveSection` drives the header underline so navigation reflects where the user actually is.
+- **CSS variables for brand colors** — merlot, terracotta, and header tokens live in `:root` (`src/index.css`) so theme tweaks do not require hunting through JSX.
 
 ## Getting started
+
+**Prerequisites:** Node.js 18+ (20 LTS recommended — see `.nvmrc`), npm.
 
 ```bash
 git clone <repository-url>
 cd lizeth-pineda-portfolio
+nvm use          # optional
 npm install
-npm run dev
+npm run dev      # http://localhost:5173
 ```
-
-The dev server runs at **http://localhost:5173** (configured in `vite.config.js`).
-
-### Scripts
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start local development server |
+| `npm run dev` | Start local dev server |
 | `npm run build` | Production build → `dist/` |
-| `npm run preview` | Serve the production build locally |
+| `npm run preview` | Preview production build locally |
 
-## How routing works
-
-| URL | What you see |
-|-----|----------------|
-| `/` | Home: Hero, About, Portfolio grid, Contact |
-| `/#hero`, `/#about`, `/#portfolio`, `/#contact` | Home scrolled to that section |
-| `/category/<slug>` | Category detail page (e.g. `/category/branding`) |
-
-Client-side routing is handled by React Router. Direct links to `/category/...` require the host to serve `index.html` for unknown paths (see [Deployment](#deployment)).
-
-## Project structure
-
-```
-src/
-├── App.jsx                 # Router setup
-├── main.jsx
-├── components/
-│   ├── layout/             # Header, shared page shell
-│   ├── sections/           # Home sections (Hero, About, Portfolio, Contact)
-│   └── portfolio/          # Category page UI (media, slider)
-├── pages/                  # Route-level pages
-├── data/                   # Portfolio content
-├── constants/              # Site copy, navigation labels
-├── hooks/                  # Shared React hooks
-└── lib/                    # Pure helpers (scroll, portfolio utils)
-public/                     # Static assets (images, videos, favicon)
-```
-
-Imports use the `@/` alias (maps to `src/`), configured in `vite.config.js`.
-
-## Updating content
-
-### Site name, email, location
-
-Edit `src/constants/site.js`:
-
-- `SITE_NAME`
-- `CONTACT_EMAIL`
-- `CONTACT_LOCATION`
-
-### Navigation menu
-
-Edit `src/constants/navigation.js` — each item has a `label` and a `section` id that matches an element `id` on the home page (`hero`, `about`, `portfolio`, `contact`).
-
-### Portfolio categories
-
-Edit `src/data/portfolio.js`. Each category is an object in the `portfolioItems` array:
-
-| Field | Required | Description |
-|-------|----------|-------------|
-| `slug` | Yes | URL segment, e.g. `branding` → `/category/branding` |
-| `title` | Yes | Category title (home card + detail page) |
-| `summary` | Yes | Short text on the home portfolio grid |
-| `description` | Yes | Long text on the category page |
-| `images` | Yes | Array of media items (see below) |
-
-The home portfolio grid and category pages are generated from this file — no UI code changes needed for new categories.
-
-### Adding a new category
-
-1. Add images or videos under `public/` (see [Media assets](#media-assets)).
-2. Copy an existing object in `src/data/portfolio.js` and update `slug`, `title`, `summary`, `description`, and `images`.
-3. Use a unique `slug` (lowercase, hyphens, no spaces).
-4. Run `npm run dev` and open `/category/your-slug` to preview.
-
-### Media assets
-
-- Place files in **`public/`** (and subfolders if you like, e.g. `public/photos/`).
-- Reference them in `portfolio.js` with paths starting at `/`, e.g. `src: '/photos/new-shot.jpg'`.
-- Do not import portfolio images from `src/` — Vite serves `public/` at the site root.
-
-### Media types in `portfolio.js`
-
-**Image** (default when `type` is omitted):
-
-```js
-{
-  src: '/my-image.png',
-  alt: 'Short description for accessibility',
-  caption: 'Optional caption under the image'
-}
-```
-
-**Video:**
-
-```js
-{
-  type: 'video',
-  src: '/my-video.mp4',
-  poster: '/optional-thumbnail.png',
-  alt: 'Description for screen readers',
-  caption: 'Optional caption'
-}
-```
-
-**Image slider** (auto-advances every 3 seconds):
-
-```js
-{
-  type: 'slider',
-  aspectRatio: '3 / 4', // optional; default is '3 / 4'
-  slides: [
-    { src: '/slide-1.jpg', alt: '...', caption: '...' },
-    { src: '/slide-2.jpg', alt: '...', caption: '...' }
-  ]
-}
-```
-
-The portfolio grid cover image is chosen automatically: first non-video item, or the first slide of a slider, or a video poster.
-
-## Customizing visuals
-
-- **Brand colors:** `tailwind.config.js` → `theme.extend.colors.brand` (`brand-cream`, `brand-sand`, `brand-warm`, `brand-brown`).
-- **Global base styles:** `src/index.css` (body font, default background).
-
-After changing Tailwind config, restart the dev server if classes do not update.
-
-## Deployment
-
-This site is hosted on **Netlify** at [https://lizethpineda.netlify.app/](https://lizethpineda.netlify.app/).
-
-### Build settings (Netlify)
+### Deploy (Netlify)
 
 | Setting | Value |
 |---------|--------|
 | Build command | `npm run build` |
 | Publish directory | `dist` |
 
-`public/_redirects` is included for SPA fallback so direct visits to `/category/...` work:
+## Project structure
 
 ```
-/*    /index.html   200
+src/
+├── App.jsx                    # BrowserRouter + route definitions
+├── main.jsx                   # React entry point
+├── pages/
+│   ├── HomePage.jsx           # Composes home sections
+│   └── CategoryPageRoute.jsx  # Loads category data by slug
+├── components/
+│   ├── layout/                # Header, SiteLayout, ScrollToTop, LanguageToggle
+│   ├── sections/              # Hero, AboutMe, Portfolio, Contact
+│   └── portfolio/             # CategoryPage, media, image slider
+├── data/
+│   ├── portfolio.js           # Categories, images, videos, captions
+│   └── i18n.js                # EN/ES strings for home sections
+├── constants/                 # Site name, email, nav labels
+├── context/                   # LanguageProvider (EN/ES)
+├── hooks/                     # Scroll spy, hash scroll, scroll threshold
+└── lib/                       # scroll helpers, portfolio utils, cn()
+public/                        # Static assets (images, videos, favicon)
+docs/                          # README screenshot
 ```
 
-### Other hosts
+Imports use the `@/` alias → `src/` (configured in `vite.config.js`).
 
-Build with `npm run build` and deploy the **`dist/`** folder. Configure a fallback so all routes serve `index.html` (required for React Router).
+### Quick content edits
 
-- **Vercel:** add a rewrite rule to `/index.html` in `vercel.json`
-- **GitHub Pages:** needs a `base` in `vite.config.js` and host-specific SPA setup
+| What | File |
+|------|------|
+| Portfolio projects | `src/data/portfolio.js` |
+| EN/ES home copy | `src/data/i18n.js` |
+| Menu labels | `src/constants/navigation.js` |
+| Name, email, location | `src/constants/site.js` |
+| Brand colors | `src/index.css` (`:root` variables) + `tailwind.config.js` |
 
-Always run `npm run build` before publishing.
+## What I learned
 
-## Troubleshooting
+Building this site meant balancing a **design-heavy layout** (full-screen sections, transparent header, animated hero) with **maintainability for a non-developer**. Pulling all portfolio data into plain JS objects made updates safe and fast. Scroll-based active navigation and hash links (`/#portfolio`) interact in subtle ways — testing on real viewport heights (`100dvh`) mattered more than assuming `100vh`. Tailwind's `@apply` fails on nested custom colors inside `@layer`, so CSS variables were the reliable escape hatch for nav and toggle styles.
 
-| Problem | What to try |
-|---------|-------------|
-| Blank page on `/category/...` when opening a direct link | Ensure SPA redirect/fallback is configured (`public/_redirects` on Netlify) |
-| Image or video does not show | Check the file exists in `public/` and the path in `portfolio.js` starts with `/` |
-| Menu scroll does not work | Section `id` in JSX must match `section` in `navigation.js` |
-| Styles look wrong after editing Tailwind | Restart `npm run dev` |
-| Port 5173 already in use | Stop the other process or change `server.port` in `vite.config.js` |
+## What I'd improve next
+
+- **Translate portfolio category content** — project titles and descriptions in `portfolio.js` are still English-only; i18n could extend there.
+- **CMS or JSON editor** — move content out of the repo so Liz can update projects without a code deploy.
+- **Automated tests** — smoke tests for routes and a11y checks on navigation and language toggle.
+- **Image optimization** — responsive `srcset` or a build-time pipeline for large photos and videos in `public/`.
+- **Reduced motion** — respect `prefers-reduced-motion` for Framer Motion animations.
 
 ## Credits
 
-- **Portfolio & design:** Lizeth Pineda
-- **Site:** React + Vite portfolio; content in `src/data/portfolio.js`
+- **Portfolio, design & content:** [Lizeth Pineda](https://lizethpineda.netlify.app/)
+- **Built with:** React, Vite, Tailwind CSS, Framer Motion
 
-All portfolio imagery and media belong to Lizeth Pineda unless otherwise noted. Code in this repository is for this portfolio project; contact the owner before reusing assets or copy.
-
-## License
-
-All rights reserved © Lizeth Pineda. No license is granted for redistribution of portfolio content without permission.
+All portfolio imagery and media belong to Lizeth Pineda unless otherwise noted. All rights reserved.

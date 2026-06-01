@@ -10,8 +10,8 @@ export function HomePage() {
   return (
     <>
       <Hero />
-      <AboutMe />
       <Portfolio />
+      <AboutMe />
       <Contact />
     </>
   )
